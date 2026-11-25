@@ -86,6 +86,11 @@ fun MisOtScreen(
                         "Tienes ${state.pendientes} OT por atender hoy.",
                         style = MaterialTheme.typography.bodyMedium
                     )
+                    Text(
+                        state.fuente,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
             }
             item { SelectorSinConexion() }

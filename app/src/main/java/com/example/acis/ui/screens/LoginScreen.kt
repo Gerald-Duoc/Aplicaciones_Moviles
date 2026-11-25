@@ -45,6 +45,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.acis.data.DatosDemo
 import com.example.acis.data.Perfil
+import com.example.acis.data.SessionStore
 import com.example.acis.viewmodel.LoginViewModel
 
 /**
@@ -61,6 +62,7 @@ fun LoginScreen(
 ) {
     val state by vm.uiState.collectAsState()
     var verClave by rememberSaveable { mutableStateOf(false) }
+    var verConfigApi by rememberSaveable { mutableStateOf(false) }
 
     // Efecto de navegación: cuando el ViewModel marca un perfil autenticado, navegamos.
     LaunchedEffect(state.perfilAutenticado) {
@@ -140,6 +142,66 @@ fun LoginScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
+
+            Spacer(Modifier.height(8.dp))
+            TextButton(
+                onClick = { verConfigApi = !verConfigApi },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    if (verConfigApi) "Ocultar configuración de API"
+                    else "Configurar API (otra PC)"
+                )
+            }
+            Text(
+                text = "Servidor actual: ${state.baseUrl}",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            if (verConfigApi) {
+                Spacer(Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = state.baseUrl,
+                    onValueChange = { vm.onBaseUrlChange(it) },
+                    label = { Text("URL de la API") },
+                    placeholder = { Text("http://192.168.1.20:8080/api/") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = "Ejemplos:\n" +
+                        "• Red local: http://IP_DE_LA_PC:8080/api/\n" +
+                        "• Túnel: https://xxxx-8080.devtunnels.ms/api/\n" +
+                        "Si escribiste solo la IP o el puerto, la app agrega /api/ automáticamente.",
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(Modifier.height(8.dp))
+                Button(
+                    onClick = { vm.guardarBaseUrl() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Guardar URL de la API")
+                }
+                TextButton(
+                    onClick = { vm.restaurarBaseUrl() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Usar URL predeterminada")
+                }
+            }
+
+            if (state.mensajeApi != null) {
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = state.mensajeApi ?: "",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
 
             if (state.error != null) {
                 Spacer(Modifier.height(8.dp))

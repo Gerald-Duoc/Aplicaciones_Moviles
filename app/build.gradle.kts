@@ -59,8 +59,15 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material.icons.core)
 
-    // MVVM: ViewModel + Room (persistencia local)
+    // MVVM: ViewModel + coroutines
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    // Conexión con la API Spring Boot
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp)
+
     // Room: base lista; codegen (ksp + room-compiler) deshabilitado por incompatibilidad en este setup
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

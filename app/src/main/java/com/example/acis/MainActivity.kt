@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.acis.data.SessionStore
 import com.example.acis.ui.screens.CatastroScreen
 import com.example.acis.ui.screens.ClienteScreen
 import com.example.acis.ui.screens.DetalleOtScreen
@@ -23,6 +24,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        SessionStore.init(applicationContext)
         setContent {
             AcisTheme {
                 val navController = rememberNavController()
